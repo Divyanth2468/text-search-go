@@ -9,6 +9,7 @@ This is a lightweight search engine implemented in Go. It loads documents from a
 - Tokenizes abstract text (basic analysis)
 - Caches the index in `Cache/*.json` to skip rebuilding
 - Searches for documents matching all query terms
+- REPL-style prompt to run multiple queries in one session
 
 ## 🚀 How to Run
 

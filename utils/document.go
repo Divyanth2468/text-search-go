@@ -44,7 +44,6 @@ func LoadDocuments(path string) ([]Document, error) {
 				for i := range cache.Documents {
 					cache.Documents[i].ID = i
 				}
-				log.Println("Used Cached file")
 				return cache.Documents, nil
 			}
 		}
@@ -85,7 +84,5 @@ func LoadDocuments(path string) ([]Document, error) {
 		defer cacheOut.Close()
 		_ = json.NewEncoder(cacheOut).Encode(cacheData)
 	}
-
-	log.Println("Didnt use cache")
 	return entries.Documents, nil
 }

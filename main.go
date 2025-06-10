@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	utils "github.com/Divyanth2468/full-text-search-engine/utils"
@@ -20,6 +23,7 @@ func main() {
 	flag.Parse()
 	log.Println("Full text search is in progress")
 	start := time.Now()
+	dumpPath = strings.TrimSpace(dumpPath)
 	docs, err := utils.LoadDocuments(dumpPath)
 	if err != nil {
 		log.Fatal(err)
@@ -50,14 +54,34 @@ func main() {
 	}
 	log.Printf("Indexed %d documents in %v", len(docs), time.Since(start))
 
-	// Search
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println("Type your search queries below (type 'exit' to quit):")
 
-	start = time.Now()
-	matchedIDs := idx.Search(query)
-	log.Printf("Search found %d documents in %v", len(matchedIDs), time.Since(start))
+	for {
+		if !scanner.Scan() {
+			break
+		}
 
-	for _, id := range matchedIDs {
-		doc := docs[id]
-		log.Printf("%d\t%s\n", id, doc.Text)
+		query := strings.TrimSpace(scanner.Text())
+
+		if query == "exit" || query == "quit" {
+			break
+		}
+
+		if query == "" {
+			continue
+		}
+
+		// Search
+
+		start = time.Now()
+		matchedIDs := idx.Search(query)
+		fmt.Printf("Found %d results in %v \n", len(matchedIDs), time.Since(start))
+
+		for _, id := range matchedIDs {
+			doc := docs[id]
+			fmt.Printf("Title: %s\nURL: %s\nDescription:%s\n--\n", doc.Title, doc.URL, doc.Text)
+		}
+
 	}
 }

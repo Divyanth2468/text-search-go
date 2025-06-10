@@ -1,3 +1,5 @@
 Cache
-dbpedia_abstracts.xml.gz.cache.json
 .DS_Store
+*.gz
+*.json
+Cache/
